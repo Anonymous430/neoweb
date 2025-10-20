@@ -1,0 +1,197 @@
+    :root{
+      --bg:#121212;
+      --surface:#181818;
+      --muted:#a7a7a7;
+      --text:#ffffff;
+      --accent:#20c05a; /* close to 'green' but not Spotify's exact hex */
+      --accent-ghost: rgba(32,192,90,.25);
+      --track:#3a3a3a;
+      --initialbg: #fff;
+    }
+    html,body{
+      margin:0;
+      height:100%;
+      background:var(--initialbg);
+      color:var(--initialbg);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    /* Demo page filler so you can see the bar stick at bottom */
+    .page {
+      min-height: 100vh;
+      padding-bottom: 96px; /* space so content doesn't sit under the bar */
+      box-sizing: border-box;
+    }
+
+    /* Bottom bar */
+    .player-bar{
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 400px;
+      height: 88px;
+      background: var(--surface);
+      border-top: 1px solid #202020;
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr; /* left info / center controls / right (optional) */
+      align-items: center;
+      gap: 16px;
+      padding: 12px 16px;
+      box-sizing: border-box;
+      z-index: 9999;
+    }
+
+    /* LEFT: cover + titles */
+    .player-info{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+    .player-cover{
+      width:56px;
+      height:56px;
+      flex:0 0 56px;
+      border-radius:8px;
+      object-fit:cover;
+      background:#2a2a2a;
+      box-shadow: 0 2px 10px rgba(0,0,0,.4);
+    }
+    .player-text{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .song-title{
+      font-size:14px;
+      font-weight:700;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .song-artist{
+      font-size:12px;
+      color:var(--muted);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+
+    /* CENTER: controls + seek */
+    .player-center{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px;
+      padding:0 8px;
+    }
+    .controls{
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+    .btn{
+      display:inline-grid;
+      place-items:center;
+      width:36px; height:36px;
+      border-radius:50%;
+      border:none;
+      background:transparent;
+      color:var(--text);
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease, color .12s ease;
+    }
+    .btn:hover{ transform: scale(1.06); background: #232323; }
+    .btn--primary{
+      width:40px; height:40px; 
+      background:var(--accent);
+      color:#000;
+      font-weight:800;
+      border-radius:999px;
+    }
+    .btn--primary:hover{ filter: brightness(1.05); transform: scale(1.05); }
+
+    .seek{
+      width:100%;
+      display:grid;
+      grid-template-columns: 48px 1fr 48px;
+      align-items:center;
+      gap:10px;
+      font-size:12px;
+      color:var(--muted);
+      user-select:none;
+    }
+    .time{
+      text-align:center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* range styling */
+    .range{
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 4px;
+      border-radius: 999px;
+      background: var(--track);
+      outline: none;
+      cursor: pointer;
+    }
+    .range::-webkit-slider-thumb{
+      -webkit-appearance: none;
+      appearance: none;
+      width: 12px; height: 12px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 0 8px var(--accent-ghost);
+      transition: box-shadow .12s ease;
+    }
+    .range:active::-webkit-slider-thumb{
+      box-shadow: 0 0 0 10px var(--accent-ghost);
+    }
+    .range::-moz-range-thumb{
+      width: 12px; height: 12px; border:none;
+      background: var(--accent);
+      border-radius:50%;
+    }
+    .range::-moz-range-track{
+      height:4px; background:var(--track); border:none; border-radius:999px;
+    }
+
+    /* RIGHT: (optional) volume or anything you want later) */
+    .player-right{
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      gap:12px;
+    }
+    .muted-note{ color:var(--muted); font-size:12px; }
+
+    /* small screens */
+    @media (max-width: 720px){
+      .player-bar{
+        grid-template-columns: 1.2fr 1.8fr .6fr;
+        height: 96px;
+      }
+      .seek{
+        grid-template-columns: 40px 1fr 40px;
+      }
+      .song-artist{ display:none; }
+    }
+
+    .redirector{
+      width:300px; height:50px; 
+      background:var(--accent);
+      color:#000;
+      font-weight:800;
+      border-radius:30px;
+      font-size: 20px;
+      left: 445px;
+      top: 260px;
+      position: relative;
+    }
+    .redirector:hover{ filter: brightness(1.05); transform: scale(1.05); }
+
+.how{
+    height: 2px;
+    top: 830px;
+    left: 0px;
+    position: relative;
+}

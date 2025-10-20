@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>about:blank</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <button class="how" href=""></button>
+    <div class="main-page">
+        <button class="redirector" onclick="redirect()">Don't exit, click me!</button>
+        <div class="player-bar">
+    <!-- LEFT -->
+    <div class="player-info">
+      <img class="player-cover js-cover" src="cover01.jpg" alt="Cover">
+      <div class="player-text">
+        <div class="song-title js-title">Song Title</div>
+        <div class="song-artist js-artist">Artist Name</div>
+      </div>
+    </div>
+
+    <!-- CENTER -->
+    <div class="player-center">
+      <div class="controls">
+        <!-- Previous button (flipped) -->
+    <button class="btn js-prev" aria-label="Previous">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18 6v12l-8.5-6L18 6zm-9 0H7v12h2z"/>
+      </svg>
+    </button>
+
+        <!-- Keeping only play/pause + next per your ask -->
+        <button class="btn btn--primary js-play" aria-label="Play/Pause">
+          <!-- Play icon -->
+          <svg class="js-play-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <!-- Pause icon (hidden by default) -->
+          <svg class="js-pause-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+        </button>
+        <button class="btn js-next" aria-label="Next">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M7 6v12l8.5-6L7 6zm9 0h2v12h-2z"/></svg>
+        </button>
+        <!-- Loop toggle button -->
+    <button class="btn js-loop" aria-label="Loop">
+      <!-- Loop OFF (gray) -->
+      <svg class="js-loop-off" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17 1l4 4-4 4V6H7a4 4 0 000 8h1v2H7a6 6 0 010-12h10V1zm0 14h-1v-2h1a4 4 0 000-8h-1V3h1a6 6 0 010 12z"/>
+      </svg>
+      <!-- Loop ON (green highlight) -->
+      <svg class="js-loop-on" width="20" height="20" viewBox="0 0 24 24" fill="limegreen" style="display:none">
+        <path d="M17 1l4 4-4 4V6H7a4 4 0 000 8h1v2H7a6 6 0 010-12h10V1zm0 14h-1v-2h1a4 4 0 000-8h-1V3h1a6 6 0 010 12z"/>
+      </svg>
+    </button>
+  </div>
+
+      <div class="seek">
+        <div class="time js-current">0:00</div>
+        <input class="range js-range" type="range" value="0" min="0" step="1" />
+        <div class="time js-duration">0:00</div>
+      </div>
+    </div>
+
+    <!-- RIGHT (empty for now so it’s clean; add volume/shuffle later if you want) -->
+    <div class="player-right">
+      <span class="muted-note">10 tracks</span>
+    </div>
+  </div>
+
+  <!-- Audio element (hidden) -->
+  <audio class="js-audio" preload="metadata"></audio>
+    </div>
+
+    <script>
+        function redirect() {
+            location.replace('about:blank')
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+        const second = document.querySelector('.main-page');
+        const how = document.querySelector('.how');
+
+        second.style.display = 'none';
+
+        how.addEventListener('click', function() {
+            second.style.display = 'block';
+            localStorage.setItem('secondClosed', 'true');
+
+        document.body.style.background = 'var(--bg)';
+        document.documentElement.style.background = 'var(--bg)';
+        document.body.style.color = 'var(--text)';
+
+    });
+});
+
+
+    const playlist = [
+      { title: "Montagem Bandido", artist: "Jmilton", src: "Montagem Bandido.mp4", cover: "montagem bandido.jpeg" },
+      { title: "Montagem Rugada", artist: "cape", src: "Montagem Rugada.mp4", cover: "rugada.jpeg" },
+      { title: "Montagem Supersonic", artist: "KHAOS", src: "Montagem Supersonic.mp4", cover: "supersonic.jpeg" },
+      { title: "No Era Amor", artist: "DJ Asul", src: "No Era Amor.mp4", cover: "no era amor.jpeg" },
+      { title: "Mente Ma", artist: "Nakama", src: "Mente Ma.mp4", cover: "mente ma.jpg" },
+      { title: "DIA DELÍCIA", artist: "Nakama", src: "Dia delicia.mp4", cover: "dia delicia.jpg" },
+      { title: "MONTAGEM BAILÃO", artist: "ATLXS", src: "Montagem Bailao.mp4", cover: "bailao.jpg" },
+      { title: "ACELERADA", artist: "sma$her", src: "Acelerada.mp4", cover: "acelerada.jpeg" },
+      { title: "Hex", artist: "80purppp", src: "Hex.mp4", cover: "hex.jpeg" },
+      { title: "Stephanie", artist: "Nafeesisboujee", src: "Stephanie.mp4", cover: "stephanie.jpeg" },
+    ];
+
+    // ====== ELEMENTS (classes, per your preference) ======
+    const audioEl   = document.querySelector(".js-audio");
+    const coverEl   = document.querySelector(".js-cover");
+    const titleEl   = document.querySelector(".js-title");
+    const artistEl  = document.querySelector(".js-artist");
+    const playBtn   = document.querySelector(".js-play");
+    const playIcn   = document.querySelector(".js-play-icon");
+    const pauseIcn  = document.querySelector(".js-pause-icon");
+    const nextBtn   = document.querySelector(".js-next");
+    const rangeEl   = document.querySelector(".js-range");
+    const curEl     = document.querySelector(".js-current");
+    const durEl     = document.querySelector(".js-duration");
+    const prevBtn   = document.querySelector(".js-prev");
+    const loopBtn   = document.querySelector(".js-loop");
+    const loopOff   = document.querySelector(".js-loop-off");
+    const loopOn    = document.querySelector(".js-loop-on");
+
+    let isLooping = false;
+    let index = 0;
+    let isSeeking = false;
+
+    function formatTime(s){
+      if (!isFinite(s)) return "0:00";
+      const m = Math.floor(s / 60);
+      const ss = Math.floor(s % 60).toString().padStart(2,'0');
+      return `${m}:${ss}`;
+    }
+
+    function loadTrack(i){
+      const t = playlist[i];
+      audioEl.src  = t.src;
+      coverEl.src  = t.cover || "cover-fallback.jpg";
+      titleEl.textContent  = t.title || "Untitled";
+      artistEl.textContent = t.artist || "Unknown";
+      rangeEl.value = 0;
+      curEl.textContent = "0:00";
+      durEl.textContent = "0:00";
+
+      //Update CarPlay / lockscreen metadata
+       if ("mediaSession" in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: t.title || "Untitled",
+      artist: t.artist || "Unknown",
+      album: " ", // optional, you can add album name if you have it
+      artwork: [
+        { src: t.cover || "cover-fallback.jpg", sizes: "512x512", type: "image/jpeg" }
+      ]
+    });
+  }
+    }
+
+    function updatePlayStateUI(){
+      const playing = !audioEl.paused && !audioEl.ended;
+      playIcn.style.display  = playing ? "none" : "block";
+      pauseIcn.style.display = playing ? "block" : "none";
+    }
+
+    function play(){
+      audioEl.play().catch(()=>{ /* ignore autoplay block */ });
+      updatePlayStateUI();
+    }
+
+    function pause(){
+      audioEl.pause();
+      updatePlayStateUI();
+    }
+
+    function prev(){
+  if (audioEl.currentTime > 3) {
+    audioEl.currentTime = 0;
+  } else {
+    index = (index - 1 + playlist.length) % playlist.length;
+    loadTrack(index);
+    play();
+  }
+}
+
+function toggleLoop(){
+  isLooping = !isLooping;
+  audioEl.loop = isLooping;
+  loopOff.style.display = isLooping ? "none" : "block";
+  loopOn.style.display  = isLooping ? "block" : "none";
+}
+
+// Events
+prevBtn.addEventListener("click", prev);
+loopBtn.addEventListener("click", toggleLoop);
+
+    function next(){
+      index = (index + 1) % playlist.length;
+      loadTrack(index);
+      play();
+    }
+
+    // Events
+    playBtn.addEventListener("click", ()=>{
+      if (audioEl.paused) play(); else pause();
+    });
+
+    nextBtn.addEventListener("click", next);
+
+    audioEl.addEventListener("loadedmetadata", ()=>{
+      rangeEl.max = Math.floor(audioEl.duration) || 0;
+      durEl.textContent = formatTime(audioEl.duration);
+    });
+
+    audioEl.addEventListener("timeupdate", ()=>{
+      if (isSeeking) return;
+      rangeEl.value = Math.floor(audioEl.currentTime) || 0;
+      curEl.textContent = formatTime(audioEl.currentTime);
+      // Ensure duration shows once known
+      if (isFinite(audioEl.duration)) {
+        durEl.textContent = formatTime(audioEl.duration);
+        rangeEl.max = Math.floor(audioEl.duration);
+      }
+    });
+
+    audioEl.addEventListener("ended", next);
+
+    // Seeking
+    rangeEl.addEventListener("input", ()=>{
+      isSeeking = true;
+      curEl.textContent = formatTime(rangeEl.value);
+    });
+    rangeEl.addEventListener("change", ()=>{
+      audioEl.currentTime = Number(rangeEl.value || 0);
+      isSeeking = false;
+    });
+
+    // Keyboard shortcuts (space = play/pause, L = next)
+    window.addEventListener("keydown",(e)=>{
+      if (e.code === "Space"){
+        e.preventDefault();
+        if (audioEl.paused) play(); else pause();
+      } else if (e.key.toLowerCase() === "l"){
+        next();
+      }
+    });
+
+    // Init
+    loadTrack(index);
+    updatePlayStateUI();
+
+    if ("mediaSession" in navigator) {
+  // Update metadata (optional: shows song info in OS controls)
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: "Song Title",
+    artist: "Artist Name",
+    album: "Album Name",
+    artwork: [
+      { src: "cover.png", sizes: "512x512", type: "image/png" }
+    ]
+  });
+
+  // Hook into headphone/media button events
+  navigator.mediaSession.setActionHandler("play", () => {
+    document.querySelector(".js-play").click();
+  });
+
+  navigator.mediaSession.setActionHandler("pause", () => {
+    document.querySelector(".js-play").click();
+  });
+
+  navigator.mediaSession.setActionHandler("previoustrack", () => {
+    document.querySelector(".js-prev").click();
+  });
+
+  navigator.mediaSession.setActionHandler("nexttrack", () => {
+    document.querySelector(".js-next").click();
+  });
+
+  // Optional: handle stop, seek, etc.
+}
+    </script>
+</body>
+</html>
